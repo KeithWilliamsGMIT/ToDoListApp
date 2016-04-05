@@ -1,0 +1,30 @@
+<ion-view view-title="{{data.lists[data.index].title}}">
+  <ion-content>
+    <div class="button-bar">
+      <a class="button" ng-click="toggleAdd()">Add</a>
+      <a class="button" ng-click="toggleDelete()">Delete</a>
+    </div>
+      
+    <div class="list" ng-show="data.showAdd">
+      <div class="item item-input-inset">
+        <label class="item item-input-wrapper">
+          <input type="text" placeholder="Task" ng-model="data.newTask">
+        </label>
+        
+        <button class="button button-small button-positive" ng-click="addNewTask()">Add</button>
+      </div>
+    </div>
+      
+    <ion-list show-delete="data.showDelete">
+      <ion-item ng-repeat="task in data.lists[data.index].tasks">
+          <label class="checkbox">
+            <input class="task-checkbox" type="checkbox" ng-model="task.completed" ng-change="save()">
+            <span class="task-title">{{task.title}}</span>
+          </label>
+
+          <ion-delete-button class="ion-minus-circled" ng-click="deleteTask($index)">
+          </ion-delete-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
