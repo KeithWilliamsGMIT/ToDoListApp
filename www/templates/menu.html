@@ -16,11 +16,6 @@
     </ion-header-bar>
       
     <ion-content>
-      <ion-list>
-        <ion-item menu-close href="/#/app/home">
-          <h4>Home</h4>
-        </ion-item>
-          
         <ion-item ng-repeat="list in data.lists" menu-close ng-click="chooseList($index)" href="#/app/home/list">
           <h4>{{list.title}}</h4>
         </ion-item>

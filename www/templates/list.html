@@ -1,10 +1,16 @@
-<ion-view view-title="{{data.lists[data.index].title}}">
-  <ion-content>
-    <div class="button-bar">
-      <a class="button" ng-click="toggleAdd()">Add</a>
-      <a class="button" ng-click="toggleDelete()">Delete</a>
-    </div>
-      
+<ion-view cache-view="false" view-title="{{data.lists[data.index].title}}">
+  <ion-nav-buttons side="right">
+    <a class="button icon ion-home" menu-close href="/#/app/home">
+    </a>
+  </ion-nav-buttons>  
+  
+  <ion-header class="bar bar-positive bar-subheader">
+    <button class="button icon ion-plus" ng-click="toggleAdd()"></button>
+    <h1 class="title">Tasks</h1>
+    <button class="button icon ion-minus" ng-click="toggleDelete()"></button>
+  </ion-header>
+
+  <ion-content class="has-subheader">
     <div class="list" ng-show="data.showAdd">
       <div class="item item-input-inset">
         <label class="item item-input-wrapper">
@@ -14,6 +20,8 @@
         <button class="button button-small button-positive" ng-click="addNewTask()">Add</button>
       </div>
     </div>
+      
+    <h3 class="error-message" ng-show="isEmpty()">This list is empty!</h3>
       
     <ion-list show-delete="data.showDelete">
       <ion-item ng-repeat="task in data.lists[data.index].tasks">

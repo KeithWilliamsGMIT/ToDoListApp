@@ -9,3 +9,8 @@
     display: block;
     float: left;
 }
+
+.error-message {
+    color: darkgray;
+    text-align: center;
+}

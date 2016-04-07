@@ -1,3 +1,5 @@
+// Create the states for the application
+
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -19,6 +21,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
+  
+    .state('app.newList', {
+      url: '/newList',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/newList.html',
+          controller: 'NewListCtrl'
+        }
+      }
+    })
 
   .state('app.list', {
     url: '/home/:listId',
@@ -30,6 +42,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
     
-  // Go to the lists view by default
+  // Go to the home view by default
   $urlRouterProvider.otherwise('/app/home');
 });
