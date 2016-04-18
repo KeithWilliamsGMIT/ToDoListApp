@@ -8,24 +8,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html',
+    templateUrl: 'templates/tabs.html',
     controller: 'AppCtrl'
   })
   
     .state('app.home', {
       url: '/home',
       views: {
-        'menuContent': {
+        'home': {
           templateUrl: 'templates/home.html',
           controller: 'HomeCtrl'
         }
       }
     })
   
+    .state('app.search', {
+    url: '/search',
+    views: {
+      'search': {
+        templateUrl: 'templates/search.html',
+        controller: 'SearchCtrl'
+      }
+    }
+  })
+  
     .state('app.newList', {
-      url: '/newList',
+      url: '/home/newList',
       views: {
-        'menuContent': {
+        'home': {
           templateUrl: 'templates/newList.html',
           controller: 'NewListCtrl'
         }
@@ -33,11 +43,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
   .state('app.list', {
-    url: '/home/:listId',
+    url: '/home/list',
     views: {
-      'menuContent': {
+      'home': {
         templateUrl: 'templates/list.html',
         controller: 'ListCtrl'
+      }
+    }
+  })
+  
+  .state('app.newTask', {
+    url: '/home/newTask',
+    views: {
+      'home': {
+        templateUrl: 'templates/newTask.html',
+        controller: 'NewTaskCtrl'
       }
     }
   });

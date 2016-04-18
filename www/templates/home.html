@@ -1,16 +1,16 @@
 <ion-view view-title="Home">
   <!-- The subheader code used here and in the list view was adapted from:
     http://stackoverflow.com/questions/28990404/ionic-add-header-which-does-not-scroll-with-list -->
-  <ion-header class="bar bar-positive bar-subheader">
-    <a class="button icon ion-plus" href="#/app/newList"></a>
+  <ion-header class="bar bar-stable bar-subheader">
+    <a class="button icon ion-plus" href="#/app/home/newList"></a>
     <h1 class="title">Lists</h1>
-    <button class="button icon ion-minus" ng-click="state.showDelete = !state.showDelete"></button>
+    <button class="button icon ion-minus" ng-click="toggleDelete()"></button>
   </ion-header>
 
   <ion-content class="has-subheader">
       <h3 class="error-message" ng-show="isEmpty()">No lists were found!</h3>
         
-      <ion-list show-delete="state.showDelete">
+      <ion-list show-delete="states.showDelete">
         <ion-item ng-repeat="list in data.lists" menu-close ng-click="chooseList($index)" href="#/app/home/list">
           {{list.title}}
             

@@ -1,11 +1,6 @@
 <ion-view cache-view="false" view-title="{{data.lists[data.index].title}}">
-  <ion-nav-buttons side="right">
-    <a class="button icon ion-home" menu-close href="/#/app/home">
-    </a>
-  </ion-nav-buttons>  
-  
-  <ion-header class="bar bar-positive bar-subheader">
-    <button class="button icon ion-plus" ng-click="toggleAdd()"></button>
+  <ion-header class="bar bar-stable bar-subheader">
+    <a class="button icon ion-plus" href="/#/app/home/newTask"></a>
     <h1 class="title">Tasks</h1>
     <button class="button icon ion-minus" ng-click="toggleDelete()"></button>
   </ion-header>
@@ -21,9 +16,10 @@
       </div>
     </div>
       
+    <!-- Meesage which is shown when the list has no tasks associated -->
     <h3 class="error-message" ng-show="isEmpty()">This list is empty!</h3>
       
-    <ion-list show-delete="data.showDelete">
+    <ion-list show-delete="states.showDelete">
       <ion-item ng-repeat="task in data.lists[data.index].tasks">
           <label class="checkbox">
             <input class="task-checkbox" type="checkbox" ng-model="task.completed" ng-change="save()">

@@ -5,9 +5,6 @@ angular.module('starter.services', [])
   // Define variables in an object called data so they can be passed by reference rather than by value
   // These variables will be made visible to the controllers
   var data = {
-      newTask: "",
-      showAdd: false,
-      showDelete: false,
       index: 0,
       lists: []
   };
@@ -19,19 +16,16 @@ angular.module('starter.services', [])
       data.index = i;
   };
     
-  function newList(name) {
-      var newList = { title: name, tasks: [] };
+  function addNewList(title) {
+      var newList = { title: title, tasks: [] };
       data.lists.push(newList);
       data.index = data.lists.length - 1;
   };
     
-  function addNewTask() {
-      if (data.newTask.length !== 0) {
-          var newTask = {title: data.newTask, date: (new Date()), completed: false };
+  function addNewTask(title, labels) {
+      if (title.length !== 0) {
+          var newTask = {title: title, date: (new Date()), completed: false, labels: labels };
           data.lists[data.index].tasks.push(newTask);
-
-          data.newTask = "";
-          data.showAdd = false;
           save();
       }
   };
@@ -67,26 +61,14 @@ angular.module('starter.services', [])
   function save () {
     localStorage['todo'] = angular.toJson(data.lists);
   };
-  
-  function toggleAdd () {
-    data.showAdd = !data.showAdd;
-    data.showDelete = false;
-  };  
-  
-  function toggleDelete () {
-    data.showDelete = !data.showDelete;
-    data.showAdd = false;
-  };
 
   return {
     data: data,
     chooseList: chooseList,
-    newList: newList,
+    addNewList: addNewList,
     addNewTask: addNewTask,
     deleteTask: deleteTask,
     deleteList: deleteList,
-    toggleAdd: toggleAdd,
-    toggleDelete: toggleDelete,
     save: save
   }
 });
