@@ -1,25 +1,31 @@
 <ion-view view-title="Search">
   <ion-content>
+    <!-- Search bar -->
     <div class="list list-inset">
-      <div class="item item-input-inset">
-        <label class="item-input-wrapper">
-          <input type="text" placeholder="Search" ng-model="data.searchTerm">
-        </label>
-
-        <button class="icon ion-search" ng-click="search()"></button>
+      <div class="item item-input">
+        <a class="icon ion-search placeholder-icon" ng-click="search()"></a>
+        <input type="text" placeholder="Search" ng-model="data.searchTerm">
       </div>
-      
-      <!-- Message thats shown when the search returns no results -->
-      <h3 class="error-message" ng-show="isEmpty()">No results found!</h3>    
-        
-      <ion-list class="item" ng-show="!isEmpty()">
-        <ion-item ng-repeat="task in data.results">
-          <label class="checkbox">
-            <input class="task-checkbox" type="checkbox" ng-model="task.completed" ng-change="save()">
-            <span class="task-title">{{task.title}}</span>
-          </label>
-        </ion-item>
-      </ion-list>
     </div>
+    
+    <!-- Message thats shown when the search returns no results -->
+    <h3 class="error-message" ng-show="isEmpty()">No results found!</h3>    
+      
+    <!-- Search results -->
+    <ion-list ng-show="!isEmpty()">
+      <ion-item class="item-icon-right" ng-repeat="task in data.results">
+        <div class="item-checkbox">
+          <label class="checkbox">
+            <input type="checkbox" ng-model="task.completed" ng-change="save()">
+          </label>
+
+          <span>{{task.title}}</span>
+        </div>
+
+        <!-- Delete button -->
+        <ion-option-button class="button-assertive ion-trash-b" ng-click="deleteTask($index)">
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

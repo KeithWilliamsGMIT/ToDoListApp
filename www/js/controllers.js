@@ -8,26 +8,15 @@ angular.module('starter.controllers', [])
 
 // Controller for home view
 .controller('HomeCtrl', function($scope, Lists) {
-    var states = {
-        showDelete: false
-    };
-    
     function isEmpty() {
       return (Lists.data.lists.length == 0);
-    };
-    
-    function toggleDelete() {
-      states.showDelete = !states.showDelete;
     };
     
     $scope.data = Lists.data;
     $scope.chooseList = Lists.chooseList;
     $scope.deleteList = Lists.deleteList;
-    $scope.states = states;
     $scope.isEmpty = isEmpty;
-    $scope.toggleDelete = toggleDelete;
 })
-
 
 // Controller for search view
 .controller('SearchCtrl', function($scope, Lists) {
@@ -39,6 +28,9 @@ angular.module('starter.controllers', [])
     // Search for tasks with the specified label
     // The search is case insensitive
     function search() {
+        // Reset search results
+        data.results = [];
+        
         for (var l = 0; l < Lists.data.lists.length; ++l) {
             
             for (var t = 0; t < Lists.data.lists[l].tasks.length; ++t) {
@@ -46,7 +38,6 @@ angular.module('starter.controllers', [])
                 for (var label = 0; label < Lists.data.lists[l].tasks[t].labels.length; ++label) {
                     
                     if (Lists.data.lists[l].tasks[t].labels[label].toUpperCase() === data.searchTerm.toUpperCase()) {
-                        console.log("Here");
                         data.results.push(Lists.data.lists[l].tasks[t]);
                         break;
                     }
@@ -55,6 +46,7 @@ angular.module('starter.controllers', [])
         }
     };
     
+    // Return true if the list is empty
     function isEmpty() {
       return (data.results.length == 0);
     };
@@ -81,10 +73,6 @@ angular.module('starter.controllers', [])
 
 // Controller for single list view
 .controller('ListCtrl', function($scope, Lists) {
-    var states = {
-      showDelete: false
-    };
-    
     // Check if the current list is empty
     function isEmpty() {
       return (Lists.data.lists[Lists.data.index].tasks.length == 0);
@@ -95,17 +83,10 @@ angular.module('starter.controllers', [])
       Lists.deleteTask(index);
     };
     
-    // Toggle delete button
-    function toggleDelete () {
-      states.showDelete = !states.showDelete;
-    };
-    
     $scope.data = Lists.data;
     $scope.save = Lists.save;
-    $scope.states = states;
     $scope.isEmpty = isEmpty;
     $scope.deleteTask = deleteTask;
-    $scope.toggleDelete = toggleDelete;
 })
 
 // Controller for single new task view
@@ -118,8 +99,10 @@ angular.module('starter.controllers', [])
     
     // Add a new label to the new task
     function addNewLabel() {
-        data.labels.push(data.label);
-        data.label = "";
+        if (data.label) {
+          data.labels.push(data.label);
+          data.label = "";
+        }
     };
     
     // Add a new task to the current list

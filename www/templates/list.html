@@ -1,11 +1,5 @@
 <ion-view cache-view="false" view-title="{{data.lists[data.index].title}}">
-  <ion-header class="bar bar-stable bar-subheader">
-    <a class="button icon ion-plus" href="/#/app/home/newTask"></a>
-    <h1 class="title">Tasks</h1>
-    <button class="button icon ion-minus" ng-click="toggleDelete()"></button>
-  </ion-header>
-
-  <ion-content class="has-subheader">
+  <ion-content>
     <div class="list" ng-show="data.showAdd">
       <div class="item item-input-inset">
         <label class="item item-input-wrapper">
@@ -19,16 +13,27 @@
     <!-- Meesage which is shown when the list has no tasks associated -->
     <h3 class="error-message" ng-show="isEmpty()">This list is empty!</h3>
       
-    <ion-list show-delete="states.showDelete">
-      <ion-item ng-repeat="task in data.lists[data.index].tasks">
+    <!-- The following style for ion-item with checkboxes was adapted from:
+    https://forum.ionicframework.com/t/ion-item-with-checkbox-and-icon-on-item-icon-right-icons-in-ion-option/5234/3 -->
+    <ion-list>
+      <ion-item class="item-icon-right" ng-repeat="task in data.lists[data.index].tasks">
+        <div class="item-checkbox">
           <label class="checkbox">
-            <input class="task-checkbox" type="checkbox" ng-model="task.completed" ng-change="save()">
-            <span class="task-title">{{task.title}}</span>
+            <input type="checkbox" ng-model="task.completed" ng-change="save()">
           </label>
-
-          <ion-delete-button class="ion-minus-circled" ng-click="deleteTask($index)">
-          </ion-delete-button>
+          
+          <span>{{task.title}}</span>
+        </div>
+          
+        <!-- Delete button -->
+        <ion-option-button class="button-assertive ion-trash-b" ng-click="deleteTask($index)">
+        </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>
+    
+  <div class="fixed-outside">
+    <a class="button button-circle button-positive icon ion-plus" href="/#/app/home/newTask">
+    </a>
+  </div>
 </ion-view>
