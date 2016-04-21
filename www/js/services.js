@@ -7,30 +7,34 @@ angular.module('starter.services', [])
       index: 0,
       lists: []
   };
-    
+
   function chooseList(i) {
       data.index = i;
   };
     
+  // Create a new todo list
   function addNewList(title) {
       var newList = { title: title, tasks: [] };
       data.lists.push(newList);
       data.index = data.lists.length - 1;
   };
-    
+  
+  // Create a new task in the current list
   function addNewTask(title, labels) {
       if (title.length !== 0) {
           var newTask = {title: title, date: (new Date()), completed: false, labels: labels };
           data.lists[data.index].tasks.push(newTask);
       }
   };
-    
-  function deleteTask(i) {
-      data.lists[data.index].tasks.splice(i, 1);
-  };
-    
+
+  // Delete the current list
   function deleteList(i) {
       data.lists.splice(i, 1);
+  };
+  
+  // Select the task at the given index in the current list
+  function deleteTask(i) {
+      data.lists[data.index].tasks.splice(i, 1);
   };
 
   return {
@@ -45,34 +49,32 @@ angular.module('starter.services', [])
 
 // The code for the load and save functions was adapted from
 //  http://stackoverflow.com/questions/28293790/how-to-save-load-web-app-setting-in-ionic-framework-after-we-close-it
-.factory('Storage', function(Lists) {
-  load();
-    
-  document.addEventListener("pause", onPause, false);
-  
+.factory('Storage', function() {
   // The load function loads the users lists
   // If there is no data found create some default lists (i.e. the first time the user opens the map)
   function load() {
-    alert("Load");
     var ls = localStorage['todo'];
+    var lists;
       
     if(ls) {
-      Lists.data.lists = angular.fromJson(l);
+      lists = angular.fromJson(ls);
     } else {
-      Lists.data.lists = [
+      lists = [
         { title: "Shopping", tasks: [] },
         { title: "Work", tasks: [] },
         { title: "Exercise", tasks: [] }]
     }
+    
+    return lists;
   };
   
   // Convert the list of to do lists to Json and save it
-  function onPause () {
-    alert("Save");
-    localStorage['todo'] = angular.toJson(Lists.data.lists);
+  function save (lists) {
+    localStorage['todo'] = angular.toJson(lists);
   };
 
   return {
-      
+      load: load,
+      save: save
   }
 });

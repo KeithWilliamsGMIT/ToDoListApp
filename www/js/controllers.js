@@ -1,5 +1,17 @@
 angular.module('starter.controllers', [])
 
+.run(function($ionicPlatform, Lists, Storage) {
+    // Load all the lists when the device is ready
+    $ionicPlatform.ready(function() {
+        Lists.data.lists = Storage.load();
+    });
+    
+    // Save the lists when the device is paused
+    $ionicPlatform.on('pause', function(){
+        Storage.save(Lists.data.lists);
+    });
+})
+
 // Controller for sidemenu
 .controller('AppCtrl', function($scope, Lists) {
     $scope.data = Lists.data;
