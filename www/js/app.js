@@ -21,10 +21,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
   
-    .state('app.search', {
-    url: '/search',
+  .state('app.calendar', {
+    url: '/calendar',
     views: {
-      'search': {
+      'calendar': {
+        templateUrl: 'templates/calendar.html',
+        controller: 'CalendarCtrl'
+      }
+    }
+  })
+  
+  .state('app.search', {
+    url: '/calendar/search',
+    views: {
+      'calendar': {
         templateUrl: 'templates/search.html',
         controller: 'SearchCtrl'
       }

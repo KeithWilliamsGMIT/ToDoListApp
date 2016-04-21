@@ -18,7 +18,7 @@
     <ion-list>
       <ion-item class="item-icon-right" ng-repeat="task in data.lists[data.index].tasks">
         <div class="item-checkbox">
-          <label class="checkbox">
+          <label class="checkbox checkbox-balanced">
             <input type="checkbox" ng-model="task.completed" ng-change="save()">
           </label>
           
@@ -33,7 +33,7 @@
   </ion-content>
     
   <div class="fixed-outside">
-    <a class="button button-circle button-positive icon ion-plus" href="#/app/home/newTask">
+    <a class="button button-circle button-energized icon ion-plus" href="#/app/home/newTask">
     </a>
   </div>
 </ion-view>

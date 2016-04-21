@@ -13,8 +13,8 @@ angular.module('starter.services', [])
   };
     
   // Create a new todo list
-  function addNewList(title) {
-      var newList = { title: title, tasks: [] };
+  function addNewList(title, goal) {
+      var newList = { title: title, goal: goal, tasks: [] };
       data.lists.push(newList);
       data.index = data.lists.length - 1;
   };
@@ -60,9 +60,9 @@ angular.module('starter.services', [])
       lists = angular.fromJson(ls);
     } else {
       lists = [
-        { title: "Shopping", tasks: [] },
-        { title: "Work", tasks: [] },
-        { title: "Exercise", tasks: [] }]
+        { title: "Shopping", goal: "Dont starve!", tasks: [] },
+        { title: "Work", goal: "Don't get fired!", tasks: [] },
+        { title: "Exercise", goal: "Go to gym 3 times a week!", tasks: [] }]
     }
     
     return lists;
@@ -71,6 +71,21 @@ angular.module('starter.services', [])
   // Convert the list of to do lists to Json and save it
   function save (lists) {
     localStorage['todo'] = angular.toJson(lists);
+  };
+
+  return {
+      load: load,
+      save: save
+  }
+})
+
+// Service for all calendar related data
+.factory('Calendar', function() {
+  var data = {
+    startTime: 0,
+    endTime: 23,
+    date: (new Date()),
+    pairs: []
   };
 
   return {

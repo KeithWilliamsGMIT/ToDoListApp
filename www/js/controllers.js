@@ -20,14 +20,56 @@ angular.module('starter.controllers', [])
 
 // Controller for home view
 .controller('HomeCtrl', function($scope, Lists) {
+    var states = {
+        showGoal: false
+    };
+    
     function isEmpty() {
       return (Lists.data.lists.length == 0);
+    };
+    
+    // Select list and show description
+    function toggleGoalVisibility(index) {
+        states.showGoal = !states.showGoal;
+        
+        if (states.showGoal) {
+            Lists.chooseList(index);
+        }
+    };
+    
+    // Get the total number of tasks in the selected list
+    function getTotalTasks() {
+        var totalTasks = 0;
+        
+        if (Lists.data.lists.length > 0) {
+            totalTasks = Lists.data.lists[Lists.data.index].tasks.length;
+        }
+        
+        return totalTasks;
+    };
+    
+    // Get the number of completed tasks in the selected list
+    function getCompletedTasks() {
+        var count = 0;
+        
+        for (var i = 0; i < getTotalTasks(); i++) {
+            if (Lists.data.lists[Lists.data.index].tasks[i].completed) {
+                count++;
+            }
+        }
+        
+        return count;
     };
     
     $scope.data = Lists.data;
     $scope.chooseList = Lists.chooseList;
     $scope.deleteList = Lists.deleteList;
+    
+    $scope.states = states;
     $scope.isEmpty = isEmpty;
+    $scope.toggleGoalVisibility = toggleGoalVisibility;
+    $scope.getTotalTasks = getTotalTasks;
+    $scope.getCompletedTasks = getCompletedTasks;
 })
 
 // Controller for search view
@@ -37,25 +79,35 @@ angular.module('starter.controllers', [])
         results: []
     };
     
-    // Search for tasks with the specified label
+    // Search for tasks with a label or name that matches the search term
     // The search is case insensitive
     function search() {
         // Reset search results
         data.results = [];
         
-        for (var l = 0; l < Lists.data.lists.length; ++l) {
+        for (var list = 0; list < Lists.data.lists.length; ++list) {
             
-            for (var t = 0; t < Lists.data.lists[l].tasks.length; ++t) {
+            for (var task = 0; task < Lists.data.lists[list].tasks.length; ++task) {
                 
-                for (var label = 0; label < Lists.data.lists[l].tasks[t].labels.length; ++label) {
-                    
-                    if (Lists.data.lists[l].tasks[t].labels[label].toUpperCase() === data.searchTerm.toUpperCase()) {
-                        data.results.push(Lists.data.lists[l].tasks[t]);
-                        break;
+                if (compareStrings(Lists.data.lists[list].tasks[task].title, data.searchTerm)) {
+                    data.results.push(Lists.data.lists[list].tasks[task]);
+                    break;
+                } else if (Lists.data.lists[list].tasks[task].labels) {
+                    for (var label = 0; label < Lists.data.lists[list].tasks[task].labels.length; ++label) {
+
+                        if (compareStrings(Lists.data.lists[list].tasks[task].labels[label], data.searchTerm)) {
+                            data.results.push(Lists.data.lists[list].tasks[task]);
+                            break;
+                        }
                     }
                 }
             }
         }
+    };
+    
+    // Compare two strings (case insensitive)
+    function compareStrings(str1, str2) {
+        return (str1.toUpperCase() === str2.toUpperCase());
     };
     
     // Return true if the list is empty
@@ -68,15 +120,35 @@ angular.module('starter.controllers', [])
     $scope.isEmpty = isEmpty;
 })
 
+// Controller for calendar view
+.controller('CalendarCtrl', function($scope, Lists) {
+    var data = {
+        times: []
+    };
+    
+    initializeTimes();
+    
+    function initializeTimes() {
+        for (var i = 0; i < 24; ++i) {
+            data.times.push(i);
+        }
+    };
+    
+    $scope.data = data;
+})
+
 // controller for new list view
 .controller('NewListCtrl', function($scope, Lists) {
     var data = {
-        title: ""
+        title: "",
+        goal: ""
     };
     
+    // Create a new list and reset values
     function addNewList() {
-        Lists.addNewList(data.title);
+        Lists.addNewList(data.title, data.goal);
         data.title = "";
+        data.goal = "";
     };
     
     $scope.data = data;

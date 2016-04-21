@@ -1,11 +1,18 @@
 <ion-view view-title="New List">
   <ion-content>
     <div class="list list-inset">
+      <!-- Input for list name -->
       <label class="item item-input">
         <input type="text" placeholder="List Name" ng-model="data.title">
       </label>
-        
-      <a class="item button button-full button-positive" href="#/app/home" ng-click="addNewList()">
+    
+      <!-- Input for goals -->
+      <label class="item item-input">
+        <input type="text" placeholder="Goal" ng-model="data.goal">
+      </label>
+      
+      <!-- Submit/Create button -->
+      <a class="item button button-full button-energized" href="#/app/home" ng-click="addNewList()">
         Add List
       </a>
     </div>

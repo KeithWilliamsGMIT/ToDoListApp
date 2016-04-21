@@ -14,17 +14,7 @@
     <!-- Search results -->
     <ion-list ng-show="!isEmpty()">
       <ion-item class="item-icon-right" ng-repeat="task in data.results">
-        <div class="item-checkbox">
-          <label class="checkbox">
-            <input type="checkbox" ng-model="task.completed" ng-change="save()">
-          </label>
-
-          <span>{{task.title}}</span>
-        </div>
-
-        <!-- Delete button -->
-        <ion-option-button class="button-assertive ion-trash-b" ng-click="deleteTask($index)">
-        </ion-option-button>
+        <span>{{task.title}}</span>
       </ion-item>
     </ion-list>
   </ion-content>
