@@ -6,10 +6,9 @@
   position: absolute;
   right: 10px;
   bottom: 0px;
-  color:white;
-  width: 100%;
+  color: white;
   height: 120px;
-  text-align:right;
+  text-align: right;
 }
 
 .button-circle {
@@ -47,4 +46,11 @@
 .error-message {
     color: darkgray;
     text-align: center;
+}
+
+/* Calendar add button */
+.calender-plus {
+    position: absolute;
+    right: 10px;
+    top: 5px;
 }

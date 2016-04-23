@@ -19,7 +19,7 @@
       <ion-item class="item-icon-right" ng-repeat="task in data.lists[data.index].tasks">
         <div class="item-checkbox">
           <label class="checkbox checkbox-balanced">
-            <input type="checkbox" ng-model="task.completed" ng-change="save()">
+            <input type="checkbox" ng-model="task.completed">
           </label>
           
           <span>{{task.title}}</span>

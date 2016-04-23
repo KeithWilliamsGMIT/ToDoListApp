@@ -22,7 +22,7 @@ angular.module('starter.services', [])
   // Create a new task in the current list
   function addNewTask(title, labels) {
       if (title.length !== 0) {
-          var newTask = {title: title, date: (new Date()), completed: false, labels: labels };
+          var newTask = { title: title, date: (new Date()), completed: false, labels: labels };
           data.lists[data.index].tasks.push(newTask);
       }
   };
@@ -36,6 +36,15 @@ angular.module('starter.services', [])
   function deleteTask(i) {
       data.lists[data.index].tasks.splice(i, 1);
   };
+    
+  // Create a default list for first time users
+  function setDefaultList() {
+      data.lists = [
+        { title: "Shopping", goal: "Dont starve!", tasks: [] },
+        { title: "Work", goal: "Don't get fired!", tasks: [] },
+        { title: "Exercise", goal: "Go to gym 3 times a week!", tasks: [] }
+      ]
+  };
 
   return {
     data: data,
@@ -43,7 +52,8 @@ angular.module('starter.services', [])
     addNewList: addNewList,
     addNewTask: addNewTask,
     deleteTask: deleteTask,
-    deleteList: deleteList
+    deleteList: deleteList,
+    setDefaultList: setDefaultList
   }
 })
 
@@ -58,11 +68,6 @@ angular.module('starter.services', [])
       
     if(ls) {
       lists = angular.fromJson(ls);
-    } else {
-      lists = [
-        { title: "Shopping", goal: "Dont starve!", tasks: [] },
-        { title: "Work", goal: "Don't get fired!", tasks: [] },
-        { title: "Exercise", goal: "Go to gym 3 times a week!", tasks: [] }]
     }
     
     return lists;
@@ -81,15 +86,55 @@ angular.module('starter.services', [])
 
 // Service for all calendar related data
 .factory('Calendar', function() {
-  var data = {
-    startTime: 0,
-    endTime: 23,
-    date: (new Date()),
-    pairs: []
-  };
+    var data = {
+        startTime: 0,
+        endTime: 23,
+        times: [],
+        date: (new Date()),
+        timeSlot: 0
+    };
+    
+    initializeTimes();
+    
+    function initializeTimes() {
+        for (var i = data.startTime; i < data.endTime + 1; ++i) {
+            var slot = { time: (i + ":00"), tasks: [] };
+            data.times.push(slot);
+        }
+    };
+    
+    function selectTimeSlot(index) {
+        data.timeSlot = index;
+    };
+    
+    // Add the task to the time slot if its not already appointed to it
+    function addTaskToSlot(task) {
+        if (!containsTask(data.times[data.timeSlot].tasks, task)) {
+            data.times[data.timeSlot].tasks.push(task);
+        }
+    };
+    
+    // Remove the task at a given index from the list at a given list
+    function removeTaskFromSlot(listIndex, taskIndex) {
+        data.times[listIndex].tasks.splice(taskIndex, 1);
+    };
+    
+    // Check if the task is already appointed to the time slot
+    // Return true if it is and false if its not
+    function containsTask(list, task) {
+        for (var i = 0; i < list.length; i++) {
+            if (list[i] === task) {
+                return true;
+            }
+        }
 
-  return {
-      load: load,
-      save: save
-  }
+        return false;
+    };
+
+    return {
+        data: data,
+        selectTimeSlot: selectTimeSlot,
+        addTaskToSlot: addTaskToSlot,
+        removeTaskFromSlot: removeTaskFromSlot
+    }
 });

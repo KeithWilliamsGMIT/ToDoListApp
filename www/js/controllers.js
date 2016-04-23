@@ -1,10 +1,16 @@
 angular.module('starter.controllers', [])
 
 .run(function($ionicPlatform, Lists, Storage) {
+    load();
+    
     // Load all the lists when the device is ready
-    $ionicPlatform.ready(function() {
+    function load() {
         Lists.data.lists = Storage.load();
-    });
+        
+        if (!Lists.data.lists) {
+            Lists.setDefaultList();
+        }
+    };
     
     // Save the lists when the device is paused
     $ionicPlatform.on('pause', function(){
@@ -73,7 +79,7 @@ angular.module('starter.controllers', [])
 })
 
 // Controller for search view
-.controller('SearchCtrl', function($scope, Lists) {
+.controller('SearchCtrl', function($scope, Lists, Calendar) {
     var data = {
         searchTerm: "",
         results: []
@@ -90,13 +96,13 @@ angular.module('starter.controllers', [])
             for (var task = 0; task < Lists.data.lists[list].tasks.length; ++task) {
                 
                 if (compareStrings(Lists.data.lists[list].tasks[task].title, data.searchTerm)) {
-                    data.results.push(Lists.data.lists[list].tasks[task]);
+                    pushResult(list, task);
                     break;
                 } else if (Lists.data.lists[list].tasks[task].labels) {
                     for (var label = 0; label < Lists.data.lists[list].tasks[task].labels.length; ++label) {
 
                         if (compareStrings(Lists.data.lists[list].tasks[task].labels[label], data.searchTerm)) {
-                            data.results.push(Lists.data.lists[list].tasks[task]);
+                            pushResult(list, task);
                             break;
                         }
                     }
@@ -104,6 +110,15 @@ angular.module('starter.controllers', [])
             }
         }
     };
+    
+    function pushResult(listIndex, taskIndex) {
+        var result = { 
+                      listTitle: Lists.data.lists[listIndex].title,
+                      task: Lists.data.lists[listIndex].tasks[taskIndex],
+                     };
+        
+        data.results.push(result);
+    }
     
     // Compare two strings (case insensitive)
     function compareStrings(str1, str2) {
@@ -115,26 +130,24 @@ angular.module('starter.controllers', [])
       return (data.results.length == 0);
     };
     
+    // Add the selected task to the time slot
+    function selectTask(index) {
+        Calendar.addTaskToSlot(data.results[index].task);
+        data.searchTerm = "";
+        data.results = [];
+    };
+    
     $scope.data = data;
     $scope.search = search;
     $scope.isEmpty = isEmpty;
+    $scope.selectTask = selectTask;
 })
 
 // Controller for calendar view
-.controller('CalendarCtrl', function($scope, Lists) {
-    var data = {
-        times: []
-    };
-    
-    initializeTimes();
-    
-    function initializeTimes() {
-        for (var i = 0; i < 24; ++i) {
-            data.times.push(i);
-        }
-    };
-    
-    $scope.data = data;
+.controller('CalendarCtrl', function($scope, Lists, Calendar) {
+    $scope.data = Calendar.data;
+    $scope.selectTimeSlot = Calendar.selectTimeSlot;
+    $scope.removeTaskFromSlot = Calendar.removeTaskFromSlot;
 })
 
 // controller for new list view
@@ -168,7 +181,6 @@ angular.module('starter.controllers', [])
     };
     
     $scope.data = Lists.data;
-    $scope.save = Lists.save;
     $scope.isEmpty = isEmpty;
     $scope.deleteTask = deleteTask;
 })

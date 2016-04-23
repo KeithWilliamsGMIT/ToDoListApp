@@ -13,8 +13,9 @@
       
     <!-- Search results -->
     <ion-list ng-show="!isEmpty()">
-      <ion-item class="item-icon-right" ng-repeat="task in data.results">
-        <span>{{task.title}}</span>
+      <ion-item class="item-icon-right" ng-click="selectTask($index)" ng-repeat="result in data.results" href="#/app/calendar">
+        <h2>{{result.task.title}}</h2>
+        <h4>{{result.listTitle}}</h4>
       </ion-item>
     </ion-list>
   </ion-content>
