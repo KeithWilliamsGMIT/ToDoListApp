@@ -3,18 +3,19 @@
  * Adapted from: http://codepen.io/mhartington/pen/cnqfL
 */
 .fixed-outside{
-  position: absolute;
-  right: 10px;
-  bottom: 0px;
-  color: white;
-  height: 120px;
-  text-align: right;
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    color: white;
+    height: 120px;
+    text-align: right;
 }
 
 .button-circle {
-  width: 50px !important;
-  height: 50px !important;
-  border-radius: 50% !important;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px #888888;
 }
 
 /* Popup message */
@@ -24,9 +25,8 @@
     bottom: 0px;
 	left: 0px;
 	right: 0px;
-	background-color: black;
+	background-color: rgba(140, 140, 140, 0.9);
     z-index: 2;
-	opacity: .80;
 }
 
 .popup-message {
@@ -35,11 +35,12 @@
     bottom: 100px;
 	left: 10px;
 	right: 10px;
-	background-color: yellow;
+	background-color: #ffc900;
 	text-align: center;
 	font-size: 18px;
 	overflow: auto;
 	border-radius: 10px;
+    box-shadow: 5px 5px 5px #888888;
 }
 
 /* Error message style */

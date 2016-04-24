@@ -1,14 +1,16 @@
+<!-- This view is resonsible for displaying all the users lists -->
 <ion-view view-title="Home">
   <ion-content>
-    <!-- Error message -->
+    <!-- Error message if no lists were found -->
     <h3 class="error-message" ng-show="isEmpty()">No lists were found!</h3>
-        
+    
+    <!-- List of todo lists -->
     <ion-list>
       <ion-item ng-repeat="list in data.lists" ng-click="chooseList($index)" href="#/app/home/list">
         {{list.title}}
         
         <!-- Info button -->
-        <ion-option-button class="button-balanced ion-information-circled" ng-click="toggleGoalVisibility($index)">
+        <ion-option-button class="button-balanced ion-information-circled" ng-click="togglePopupVisibility($index)">
         </ion-option-button>
           
         <!-- Delete button -->
@@ -18,8 +20,8 @@
     </ion-list>
   </ion-content>
     
-  <!-- Popup message -->
-  <div class="popup" ng-show="states.showGoal" ng-click="toggleGoalVisibility(0)">
+  <!-- Popup message which displaysinformation about each list -->
+  <div class="popup" ng-show="states.showPopup" ng-click="togglePopupVisibility(0)">
     <div class="popup-message">
       <h4>{{data.lists[data.index].title}}</h4>
       <p>{{data.lists[data.index].goal}}</p>

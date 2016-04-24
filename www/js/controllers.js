@@ -1,14 +1,20 @@
 angular.module('starter.controllers', [])
 
-.run(function($ionicPlatform, Lists, Storage) {
+// Load data when application starts and save data when the application is paused
+.run(function($ionicPlatform, Lists, Calendar, Storage) {
     load();
     
     // Load all the lists when the device is ready
     function load() {
-        Lists.data.lists = Storage.load();
+        var data = Storage.load();
         
-        if (!Lists.data.lists) {
+        // If there was no data found create a default list and set the timestamp to today
+        if (!data) {
             Lists.setDefaultList();
+            Calendar.initializeSchedule((new Date()), Lists.data.lists);
+        } else {
+            Lists.data.lists = data.lists;
+            Calendar.initializeSchedule(data.timestamp, Lists.data.lists);
         }
     };
     
@@ -18,122 +24,66 @@ angular.module('starter.controllers', [])
     });
 })
 
-// Controller for sidemenu
-.controller('AppCtrl', function($scope, Lists) {
-    $scope.data = Lists.data;
-    $scope.chooseList = Lists.chooseList;
-})
-
 // Controller for home view
 .controller('HomeCtrl', function($scope, Lists) {
     var states = {
-        showGoal: false
+        showPopup: false
     };
     
     function isEmpty() {
       return (Lists.data.lists.length == 0);
     };
     
-    // Select list and show description
-    function toggleGoalVisibility(index) {
-        states.showGoal = !states.showGoal;
+    // Select list and show/hide popup
+    function togglePopupVisibility(index) {
+        states.showPopup = !states.showPopup;
         
-        if (states.showGoal) {
+        if (states.showPopup) {
             Lists.chooseList(index);
         }
-    };
-    
-    // Get the total number of tasks in the selected list
-    function getTotalTasks() {
-        var totalTasks = 0;
-        
-        if (Lists.data.lists.length > 0) {
-            totalTasks = Lists.data.lists[Lists.data.index].tasks.length;
-        }
-        
-        return totalTasks;
-    };
-    
-    // Get the number of completed tasks in the selected list
-    function getCompletedTasks() {
-        var count = 0;
-        
-        for (var i = 0; i < getTotalTasks(); i++) {
-            if (Lists.data.lists[Lists.data.index].tasks[i].completed) {
-                count++;
-            }
-        }
-        
-        return count;
     };
     
     $scope.data = Lists.data;
     $scope.chooseList = Lists.chooseList;
     $scope.deleteList = Lists.deleteList;
+    $scope.getTotalTasks = Lists.getTotalTasks;
+    $scope.getCompletedTasks = Lists.getCompletedTasks;
     
     $scope.states = states;
     $scope.isEmpty = isEmpty;
-    $scope.toggleGoalVisibility = toggleGoalVisibility;
-    $scope.getTotalTasks = getTotalTasks;
-    $scope.getCompletedTasks = getCompletedTasks;
+    $scope.togglePopupVisibility = togglePopupVisibility;
 })
 
 // Controller for search view
 .controller('SearchCtrl', function($scope, Lists, Calendar) {
     var data = {
         searchTerm: "",
+        hasSearched: false,
         results: []
     };
     
     // Search for tasks with a label or name that matches the search term
-    // The search is case insensitive
     function search() {
         // Reset search results
         data.results = [];
         
-        for (var list = 0; list < Lists.data.lists.length; ++list) {
-            
-            for (var task = 0; task < Lists.data.lists[list].tasks.length; ++task) {
-                
-                if (compareStrings(Lists.data.lists[list].tasks[task].title, data.searchTerm)) {
-                    pushResult(list, task);
-                    break;
-                } else if (Lists.data.lists[list].tasks[task].labels) {
-                    for (var label = 0; label < Lists.data.lists[list].tasks[task].labels.length; ++label) {
-
-                        if (compareStrings(Lists.data.lists[list].tasks[task].labels[label], data.searchTerm)) {
-                            pushResult(list, task);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    };
-    
-    function pushResult(listIndex, taskIndex) {
-        var result = { 
-                      listTitle: Lists.data.lists[listIndex].title,
-                      task: Lists.data.lists[listIndex].tasks[taskIndex],
-                     };
+        // Get results from search
+        data.results = Calendar.search(data.searchTerm, Lists.data.lists);
         
-        data.results.push(result);
-    }
-    
-    // Compare two strings (case insensitive)
-    function compareStrings(str1, str2) {
-        return (str1.toUpperCase() === str2.toUpperCase());
+        // Set hasSearched to true so if there are no results an error message will be shown
+        data.hasSearched = true;
     };
     
     // Return true if the list is empty
     function isEmpty() {
-      return (data.results.length == 0);
+      return (data.results.length == 0 && data.hasSearched);
     };
     
     // Add the selected task to the time slot
     function selectTask(index) {
         Calendar.addTaskToSlot(data.results[index].task);
         data.searchTerm = "";
+        data.hasSearched = false;
         data.results = [];
     };
     
@@ -169,7 +119,7 @@ angular.module('starter.controllers', [])
 })
 
 // Controller for single list view
-.controller('ListCtrl', function($scope, Lists) {
+.controller('ListCtrl', function($scope, Lists, Calendar) {
     // Check if the current list is empty
     function isEmpty() {
       return (Lists.data.lists[Lists.data.index].tasks.length == 0);
@@ -177,12 +127,16 @@ angular.module('starter.controllers', [])
     
     // Delete a task
     function deleteTask (index) {
-      Lists.deleteTask(index);
+        // Remove task from calendar
+        Calendar.removeTaskFromCalendar(Lists.data.lists[Lists.data.index].tasks[index]);
+        
+        // Delete task permanently
+        Lists.deleteTask(index);
     };
     
     $scope.data = Lists.data;
-    $scope.isEmpty = isEmpty;
     $scope.deleteTask = deleteTask;
+    $scope.isEmpty = isEmpty;
 })
 
 // Controller for single new task view
@@ -193,15 +147,21 @@ angular.module('starter.controllers', [])
         labels: []
     };
     
-    // Add a new label to the new task
+    // Add a new label to the new task if its not an empty string and is not already in list
+    // Reset label value
     function addNewLabel() {
+        // If not empty
         if (data.label) {
-          data.labels.push(data.label);
-          data.label = "";
+            // If not in list
+            if (data.labels.indexOf(data.label) === -1) {
+                data.labels.push(data.label);
+            }
         }
+        
+        data.label = "";
     };
     
-    // Add a new task to the current list
+    // Add a new task to the current listand reset values
     function addNewTask() {
         Lists.addNewTask(data.title, data.labels);
         data.title = "";
@@ -214,7 +174,7 @@ angular.module('starter.controllers', [])
         return data.labels.join(", ");
     };
     
-    // Check if there are labels
+    // Retun true if the list of labels is empty
     function isEmpty() {
         return (data.labels.length == 0);
     };

@@ -1,3 +1,4 @@
+<!-- This view is responisble for searching for and displaying tasks based on the task title and labels -->
 <ion-view view-title="Search">
   <ion-content>
     <!-- Search bar -->
@@ -14,7 +15,10 @@
     <!-- Search results -->
     <ion-list ng-show="!isEmpty()">
       <ion-item class="item-icon-right" ng-click="selectTask($index)" ng-repeat="result in data.results" href="#/app/calendar">
+        <!-- Task title -->
         <h2>{{result.task.title}}</h2>
+        
+        <!-- List title -->
         <h4>{{result.listTitle}}</h4>
       </ion-item>
     </ion-list>

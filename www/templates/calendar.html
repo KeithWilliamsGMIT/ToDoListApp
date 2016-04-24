@@ -1,8 +1,10 @@
+<!-- This view is responsible for displaying the scheduled tasks for today -->
 <ion-view view-title="Calendar">
   <ion-content>
     <!-- List of time slots -->
     <div class="list">
       <div class="item" ng-repeat="slot in data.times">
+        <!-- Time and add button -->
         <h2>{{slot.time}}</h2>
         <a class="button button-energized button-small ion-plus calender-plus" ng-click="selectTimeSlot($index)" href="#/app/calendar/search"></a>
         <hr/>

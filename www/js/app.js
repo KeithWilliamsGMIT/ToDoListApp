@@ -2,75 +2,80 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 .config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
+    $stateProvider
 
     .state('app', {
-    url: '/app',
-    abstract: true,
-    templateUrl: 'templates/tabs.html',
-    controller: 'AppCtrl'
-  })
-  
-    .state('app.home', {
-      url: '/home',
-      views: {
-        'home': {
-          templateUrl: 'templates/home.html',
-          controller: 'HomeCtrl'
-        }
-      }
-    })
-  
-  .state('app.calendar', {
-    url: '/calendar',
-    views: {
-      'calendar': {
-        templateUrl: 'templates/calendar.html',
-        controller: 'CalendarCtrl'
-      }
-    }
-  })
-  
-  .state('app.search', {
-    url: '/calendar/search',
-    views: {
-      'calendar': {
-        templateUrl: 'templates/search.html',
-        controller: 'SearchCtrl'
-      }
-    }
-  })
-  
-    .state('app.newList', {
-      url: '/home/newList',
-      views: {
-        'home': {
-          templateUrl: 'templates/newList.html',
-          controller: 'NewListCtrl'
-        }
-      }
+        url: '/app',
+        abstract: true,
+        templateUrl: 'templates/tabs.html',
     })
 
-  .state('app.list', {
-    url: '/home/list',
-    views: {
-      'home': {
-        templateUrl: 'templates/list.html',
-        controller: 'ListCtrl'
-      }
-    }
-  })
-  
-  .state('app.newTask', {
-    url: '/home/newTask',
-    views: {
-      'home': {
-        templateUrl: 'templates/newTask.html',
-        controller: 'NewTaskCtrl'
-      }
-    }
-  });
+    // Home state
+    .state('app.home', {
+        url: '/home',
+        views: {
+            'home': {
+                templateUrl: 'templates/home.html',
+                controller: 'HomeCtrl'
+            }
+        }
+    })
+
+    // Calendar state
+    .state('app.calendar', {
+        url: '/calendar',
+        views: {
+            'calendar': {
+                templateUrl: 'templates/calendar.html',
+                controller: 'CalendarCtrl'
+            }
+        }
+    })
+
+    // Search state
+    .state('app.search', {
+        url: '/calendar/search',
+        views: {
+            'calendar': {
+                templateUrl: 'templates/search.html',
+                controller: 'SearchCtrl'
+            }
+        }
+    })
+
+    // New list state
+    .state('app.newList', {
+        url: '/home/newList',
+        views: {
+            'home': {
+                templateUrl: 'templates/newList.html',
+                controller: 'NewListCtrl'
+            }
+        }
+    })
+
+    // List state
+    .state('app.list', {
+        url: '/home/list',
+        views: {
+            'home': {
+                templateUrl: 'templates/list.html',
+                controller: 'ListCtrl'
+            }
+        }
+    })
+
+    // New task state
+    .state('app.newTask', {
+        url: '/home/newTask',
+        views: {
+            'home': {
+                templateUrl: 'templates/newTask.html',
+                controller: 'NewTaskCtrl'
+            }
+        }
+    });
     
-  // Go to the home view by default
-  $urlRouterProvider.otherwise('/app/home');
+    // Go to the home view by default
+    $urlRouterProvider.otherwise('/app/home');
 });

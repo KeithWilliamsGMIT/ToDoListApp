@@ -1,6 +1,8 @@
+<!-- This view is resonsible for gathering information about the new task -->
 <ion-view view-title="New Task">
   <ion-content>
     <div class="list list-inset">
+      
       <!-- Task title input -->
       <label class="item item-input">
         <input type="text" placeholder="Task Title" ng-model="data.title">
@@ -8,18 +10,18 @@
     
       <!-- Label input -->
       <div class="item item-input-inset">
-        <label class="item-input-wrapper">
+        <label class="item-input item-input-wrapper">
           <input type="text" placeholder="+ Add Label" ng-model="data.label">
         </label>
         
-        <button class="button button-small ion-plus" ng-click="addNewLabel()">
+        <button class="button button-small button-energized ion-plus" ng-click="addNewLabel()">
         </button>
       </div>
         
       <!-- Show message if the user hasn't added any labels to the task yet-->
       <h3 class="item error-message" ng-show="isEmpty()">No labels added yet!</h3>
         
-      <!-- Display labels -->
+      <!-- Display comma seperated labels -->
       <label class="item" ng-show="!isEmpty()">
         {{formattedLabels()}}
       </label>
