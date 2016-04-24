@@ -119,7 +119,7 @@ angular.module('starter.controllers', [])
 })
 
 // Controller for single list view
-.controller('ListCtrl', function($scope, Lists, Calendar) {
+.controller('TasksCtrl', function($scope, Lists, Calendar) {
     // Check if the current list is empty
     function isEmpty() {
       return (Lists.data.lists[Lists.data.index].tasks.length == 0);

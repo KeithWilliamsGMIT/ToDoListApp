@@ -64,9 +64,9 @@ angular.module('starter.services', [])
   // Create a default list for first time users
   function setDefaultList() {
       data.lists = [
-        { title: "Shopping", goal: "Dont starve!", tasks: [] },
-        { title: "Work", goal: "Don't get fired!", tasks: [] },
-        { title: "Exercise", goal: "Go to gym 3 times a week!", tasks: [] }
+        { title: "Shopping", goal: "Some goal here!", tasks: [] },
+        { title: "Work", goal: "Some goal here!", tasks: [] },
+        { title: "Exercise", goal: "Some goal here!", tasks: [] }
       ]
   };
 

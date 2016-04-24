@@ -55,12 +55,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
     // List state
-    .state('app.list', {
-        url: '/home/list',
+    .state('app.tasks', {
+        url: '/home/tasks',
         views: {
             'home': {
-                templateUrl: 'templates/list.html',
-                controller: 'ListCtrl'
+                templateUrl: 'templates/tasks.html',
+                controller: 'TasksCtrl'
             }
         }
     })
